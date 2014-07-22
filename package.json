@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha --harmony-generators tests -u bdd -R spec",
-    "dev": "NODE_ENV=development node --harmony app.js"
+    "dev": "NODE_ENV=development node --harmony app.js",
+    "demon": "NODE_ENV=development nodemon --harmony app.js"
   },
   "devDependencies": {
     "mocha": "~1.18.2",
