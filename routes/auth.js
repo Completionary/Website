@@ -43,12 +43,12 @@ passport.use(new GithubStrategy(config.github,
                         // Woot? How does this happen? Someone has the same
                         // email but does not have the same githubID? That does
                         // not seem right.
-                        throw('github email mismatch');
+                        throw(Error('github email mismatch'));
                     }
                 } else {
                     // A database error happened....
                     // TODO: Show error page!
-                    throw('Database error');
+                    throw(Error('Database error'));
                 }
             }
 
@@ -84,7 +84,11 @@ passport.use(new LocalStrategy(
 ));
 
 passport.serializeUser(function (user, done) {
-    done(null, user._id);
+    if (!user) {
+        done('ERROR');
+    } else {
+        done(null, user._id);
+    }
 });
 
 passport.deserializeUser(function (id, done) {

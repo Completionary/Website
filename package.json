@@ -14,7 +14,7 @@
     "co": "~3.0.6"
   },
   "author": "",
-  "license": "ISC",
+  "license": "GPL",
   "dependencies": {
     "koa": "~0.8.1",
     "koa-route": "~1.1.4",

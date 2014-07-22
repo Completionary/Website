@@ -21,9 +21,8 @@ module.exports = function (app) {
     });
 
     // endpoint
-    app.get('/dashboard', authed, endpoint.list);
+    app.get('/dashboard', authed, endpoint.get);
     app.post('/endpoint', authed, endpoint.create);
-    app.get('/dashboard/:id', authed, endpoint.get);
 
     // loggedout
     app.get('/', require('./routes/loggedOut'));

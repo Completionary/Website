@@ -4,7 +4,8 @@ var monk = require('monk'),
     validator = require('validator'),
     co = require('co'),
     _ = require('underscore'),
-    passport = require('./auth.js'),
+    passport = require('./auth'),
+    endpoint = require('./endpoint'),
     config = require('../config'),
     render = require('../lib/render');
 
@@ -56,8 +57,7 @@ module.exports.create = function *createUserHandler(next) {
             name: postedUser.name,
             password: postedUser.password,
             provider: 'local',
-            email: postedUser.email,
-            githubID: 'NONE'
+            email: postedUser.email
         });
     } catch(e) {
         // If only the email is in use, we return to the signup
@@ -74,7 +74,7 @@ module.exports.create = function *createUserHandler(next) {
             // TODO: Show error page
 
             // Emmit the error so we can handle the logging etc.
-            this.app.emit('error', err, this);
+            this.app.emit('error', e, this);
         }
     }
 
@@ -114,9 +114,14 @@ function *createUser(data) {
     var u = yield users.insert(data);
 
     if (u === null) {
-        throw(Error('Could not create the user'))
+        throw(Error('Could not create the user'));
     }
-    else return u;
+
+    // Create the endpoint
+    console.log('Create endpoint');
+    yield endpoint.create(u);
+
+    return u;
 }
 module.exports.createUser = createUser;
 
