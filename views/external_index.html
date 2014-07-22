@@ -1,0 +1,131 @@
+{% extends 'layout.html' %}
+
+{% block title %}Completionary{% endblock %}
+
+{% block content %}
+<nav class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Completionary</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/signup" class="btn btn-default">Signup</a></li>
+        <li class="divider-vertical"></li>
+        <li class="dropdown">
+            <a class="dropdown-toggle" href="#" data-toggle="dropdown">Sign In <strong class="caret"></strong></a>
+            <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
+                <form class="navbar-form" role="search" action="/auth/local" method="POST">
+                    <a href="/auth/github" class="btn btn-default btn-github" style="width: 100%"><i class="fa fa-github fa-lg"></i> Login with GitHub</a>
+                    <div class="form-group">
+                        <input type="email" class="form-control signin-top" placeholder="Email" name="email">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control signin-bottom" placeholder="Password" name="password">
+                    </div>
+                    <input type="hidden" name="_csrf" value="{{_csrf}}">
+                    <input class="btn btn-primary" style="width: 100%" type="submit" name="  commit" value="Sign In" />
+                </form>
+            </div>
+         </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+<div class="jumbotron">
+    <div class="container">
+        <h1>Completionary</h1>
+        <p>Type less! Find faster! Have a better experience.</p>
+        <form role="form">
+          <div class="controls">
+            <input class="form-control input-lg" type="text" placeholder="Type anything">
+            <button class="btn btn-primary" >Go</button>
+          </div>
+        </form>
+        <p>Check out our wiked fast wikipedia demo with thumbnails.</p>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <h2>Meet our technology</h2>
+        <div class="col-md-4">
+            <h3>Pricing</h3>
+            <p>
+                <a href ="/signup">Register for a free trial account</a>: You get a small index with up to 1000 items and 1000 free api calls per month.
+            </p>
+            <p>
+                <a href="">upgrade to our silver level</a>. For 20 dollar per month you already receive 1 million API calls and an index size of 10'000 items. 
+            </p>
+            <p>
+                <a href="">check out which payment plan suits your needs!</a>
+            </p>
+        </div>
+        <div class="col-md-4">
+            <h3>Fastest Search experience for your Customer.</h3>
+            <p>
+                Our servers are located in any continent bringing low network times to your customers. 
+            </p>
+            <p>
+                Our API is designed to minimize HTTP traffic.
+            </p>
+            <p>
+                Even when slashdoted our servers will hold all the customers your site gets.
+            </p>
+        </div>
+        <div class="col-md-4">
+            <h3>Effortless</h3>
+            <p>
+                just upload your list of ranked search terms.
+            </p>
+            <p>
+                If you run standard content management systems for your site you can just out connect your site to our API
+            </p>
+            <p>
+                include one line of javascript to your HTML templates.
+            </p>
+        </div>
+    </div>
+        <div class="row">
+            <h2>Meet our team</h2>
+        <div class="col-md-4">
+        <h3>Rene Pickhardt</h3>
+            <p>
+                <img src="https://avatars0.githubusercontent.com/u/1926816?s=140"/>
+                <a href="http://www.rene-pickhardt.de">Rene Pickhardt</a> (Uni Koblenz) <em>founder</em>.
+            </p>
+            <p>
+                Rene is a data structure and algorithms geek. He also manages the team processes, development and communication.
+            </p>
+        </div>
+        <div class="col-md-4">
+            <h3>Jonas Kunze</h3>
+            <p>
+                <img src="https://avatars3.githubusercontent.com/u/5029470?s=140"/>
+                <a href="">Jonas Kunze</a> (CERN) <em>founder</em>.                
+            </p>
+            <p>
+                Jonas is our networking expert and high performance computing freak from CERN. He is devoted to bringing the last percents of performance to your customer.
+            </p>
+        </div>
+        <div class="col-md-4">
+            <h3>Christoph Ehlen</h3>
+            <p>
+               <img src="https://avatars3.githubusercontent.com/u/222885?s=140"/>
+               <a href="">Christoph Ehlen</a> (Uni Koblenz) <em>founder</em>
+            </p>
+            <p>
+                Christoph is our javascript and node.js hacker. He is responsible for the slick user experience of our dashboard.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
