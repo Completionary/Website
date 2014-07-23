@@ -3,44 +3,7 @@
 {% block title %}Completionary{% endblock %}
 
 {% block content %}
-<nav class="navbar navbar-default" role="navigation">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">Completionary</a>
-    </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="/signup" class="btn btn-default">Signup</a></li>
-        <li class="divider-vertical"></li>
-        <li class="dropdown">
-            <a class="dropdown-toggle" href="#" data-toggle="dropdown">Sign In <strong class="caret"></strong></a>
-            <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
-                <form class="navbar-form" role="search" action="/auth/local" method="POST">
-                    <a href="/auth/github" class="btn btn-default btn-github" style="width: 100%"><i class="fa fa-github fa-lg"></i> Login with GitHub</a>
-                    <div class="form-group">
-                        <input type="email" class="form-control signin-top" placeholder="Email" name="email">
-                    </div>
-                    <div class="form-group">
-                        <input type="password" class="form-control signin-bottom" placeholder="Password" name="password">
-                    </div>
-                    <input type="hidden" name="_csrf" value="{{_csrf}}">
-                    <input class="btn btn-primary" style="width: 100%" type="submit" name="  commit" value="Sign In" />
-                </form>
-            </div>
-         </li>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
 <div class="jumbotron">
     <div class="container">
         <h1>Completionary</h1>
@@ -127,5 +90,44 @@
             </p>
         </div>
     </div>
+<div class="row">
+        <h2>Get Started</h2>
+        <div class="col-md-4">
+            <h3>API Documentation</h3>
+            <p>
+                find the documentation of our API
+            </p>
+            <p>
+                more
+            </p>
+            <p>
+                text to come
+            </p>
+        </div>
+        <div class="col-md-4">
+            <h3>Contact us</h3>
+            <p>
+                Completionary GbR
+            </p>
+            <p>
+                Some address
+            </p>
+            <p>
+                some phone number and email
+            </p>
+        </div>
+        <div class="col-md-4">
+            <h3>Testimonials</h3>
+            <p>
+                Metalcon.de
+            </p>
+            <p>
+                related-work.net
+            </p>
+            <p>
+                where are you?
+            </p>
+        </div>
+    </div>    
 </div>
 {% endblock %}
