@@ -118,7 +118,6 @@ function *createUser(data) {
     }
 
     // Create the endpoint
-    console.log('Create endpoint');
     yield endpoint.create(u);
 
     return u;

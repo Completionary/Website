@@ -1,10 +1,21 @@
 {% extends 'layout.html' %}
 
+{% block head %}
+<link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.5.1.css">
+{% endblock %}
+
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
 <div class="container">
   <h1>API Key: {{ endpoint.apiKey }}</h1>
-
+  <div id="apiRequestsRealtime"></div>
 </div>
+{% endblock %}
+
+{% block footerInclude %}
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="http://cdn.oesmith.co.uk/morris-0.5.1.min.js"></script>
+<script src="/js/MorrisRealtime.js"></script>
+<script src="/js/Dashboard.js"></script>
 {% endblock %}
