@@ -10,5 +10,11 @@ $(function () {
     });
     m.start();
     m.testInterval();
-    this.set('realtimeChart', m);
+
+    var r = new RealtimeCallsLeft({
+        element: 'apiCallsProgress',
+        max: 1000,
+        current: 100
+    });
+    r.testInterval();
 });
