@@ -23,7 +23,11 @@ module.exports = function (app) {
     // endpoint
     app.get('/dashboard', authed, endpoint.get);
     app.post('/endpoint', authed, endpoint.create);
+    app.get('/upgrade', authed, endpoint.pricing);
+    app.post('/upgrade', authed, endpoint.upgrade);
+    app.get('/upgrade/:offerId', authed, endpoint.payment);
 
     // loggedout
     app.get('/', require('./routes/loggedOut'));
+    app.get('/pricing', notAuthed('/upgrade'), endpoint.pricing)
 };

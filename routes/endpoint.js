@@ -3,6 +3,7 @@ var monk = require('monk'),
     config = require('../config'),
     _ = require('underscore'),
     crypto = require('crypto'),
+    paymill = require('../lib/paymill'),
     render = require('../lib/render');
 
 var db = monk(config.mongoUrl);
@@ -44,5 +45,44 @@ function getAPIKey (user) {
 module.exports.get = function *dashboard (next) {
     // Get all endpoints for the logged in user
     var endpoint = yield endpoints.findOne({user_id: this.req.user._id});
-    this.body = yield render('dashboard', {_csrf: this.csrf, endpoint: endpoint});
+    this.body = yield render('dashboard', this, {endpoint: endpoint});
+};
+
+// GET
+// Shows the pricing table
+// If the user is logged in, he can upgrade his plan from this screen,
+// Else he gets promted to sign up
+module.exports.pricing = function *(next) {
+    var offers = yield paymill.getOffers();
+    // Change the price to full values, not cents
+    offers.forEach(function (offer) {
+        offer.priceDisplay = (offer.amount / 100).toFixed(2);
+    });
+    var data = {
+        offers: offers,
+        user: this.req.user
+    };
+    this.body = yield render('pricing', this, data);
+};
+
+module.exports.payment = function *(next) {
+    var offer = yield paymill.getOfferById(this.params.offerId);
+    this.body = yield render('payment', this, {offer: offer});
+};
+
+module.exports.upgrade = function *(next) {
+    var token = this.request.body.paymillToken;
+    // Create new payment
+    var payment = yield paymill.payments.create({
+        token: token,
+        client: this.req.user.paymillId
+    });
+
+    console.log(payment);
+    var sub = yield paymill.subscriptions.create({
+        client: this.req.user.paymillId,
+        offer: this.request.body.offerId,
+        payment: payment.data.id
+    });
+    // SUBSCRIPTION SUCCESS!
 };

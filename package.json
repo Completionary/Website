@@ -35,6 +35,7 @@
     "koa-csrf": "~2.1.2",
     "co-bcrypt": "~0.1.0",
     "underscore": "~1.6.0",
-    "koa-static": "~1.4.5"
+    "koa-static": "~1.4.5",
+    "paymill-node": "~0.1.2"
   }
 }

@@ -1,16 +1,20 @@
 var monk = require('monk'),
     wrap = require('co-monk'),
-    bcrypt = require('co-bcrypt'),
+    config = require('../config');
+var db = monk(config.mongoUrl);
+var users = module.exports.users = wrap(db.get('users'));
+// Cross reference so we first need to set the users collection
+var paymill = require('../lib/paymill');
+
+var bcrypt = require('co-bcrypt'),
     validator = require('validator'),
     co = require('co'),
     _ = require('underscore'),
     passport = require('./auth'),
     endpoint = require('./endpoint'),
-    config = require('../config'),
     render = require('../lib/render');
 
-var db = monk(config.mongoUrl);
-var users = module.exports.users = wrap(db.get('users'));
+
 
 // CRUD Routes
 
@@ -120,6 +124,9 @@ function *createUser(data) {
     // Create the endpoint
     yield endpoint.create(u);
 
+    // Create paymill customer
+    yield paymill.create(u);
+
     return u;
 }
 module.exports.createUser = createUser;
@@ -133,7 +140,7 @@ module.exports.signup = function *serveSignup(next) {
     if (errors) {
         this.session.errors = null;
     }
-    this.body = yield render('signup.html', {_csrf: this.csrf, errors: errors, data: data});
+    this.body = yield render('signup.html', this, {errors: errors, data: data});
 };
 
 // Renders the Login page
@@ -145,7 +152,7 @@ module.exports.login = function *serveLogin (next) {
     if (errors) {
         this.session.errors = null;
     }
-    this.body = yield render('login.html', {_csrf: this.csrf, errors: errors, data: data})
+    this.body = yield render('login.html', this, {errors: errors, data: data})
 };
 
 // Renders the profile page

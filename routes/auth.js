@@ -48,7 +48,8 @@ passport.use(new GithubStrategy(config.github,
                 } else {
                     // A database error happened....
                     // TODO: Show error page!
-                    throw(Error('Database error'));
+                    console.log(e);
+                    throw(e);
                 }
             }
 

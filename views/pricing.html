@@ -1,0 +1,67 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    {% if user %}
+        Upgrade
+    {% else %}
+        Pricing
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+      <div class="col-md-4">
+      <div class="panel panel-danger">
+         <div class="panel-heading"><h3 class="text-center">{{ offers[0].name }}</h3></div>
+             <div class="panel-body text-center">
+                <p class="lead" style="font-size:40px"><strong>{{ offers[0].priceDisplay }}&euro; / month</strong></p>
+            </div>
+                           <ul class="list-group list-group-flush text-center">
+                                <li class="list-group-item"><i class="icon-ok text-danger"></i> Personal use</li>
+                                <li class="list-group-item"><i class="icon-ok text-danger"></i> Unlimited projects</li>
+                                <li class="list-group-item"><i class="icon-ok text-danger"></i> 27/7 support</li>
+                            </ul>
+        <div class="panel-footer">
+            <a class="btn btn-lg btn-block btn-danger" href="{% if user %}/upgrade/{{offers[0].id}}{% else %}/signup{% endif %}">{% if user %}Upgrade{% else %}Signup{% endif %}</a>
+        </div>
+     </div>
+
+      </div>
+       <div class="col-md-4">
+      <div class="panel panel-info">
+         <div class="panel-heading"><h3 class="text-center">{{ offers[1].name }}</h3></div>
+             <div class="panel-body text-center">
+                <p class="lead" style="font-size:40px"><strong>{{ offers[1].priceDisplay }}&euro; / month</strong></p>
+            </div>
+                           <ul class="list-group list-group-flush text-center">
+                                <li class="list-group-item"><i class="icon-ok text-danger"></i> Personal use</li>
+                                <li class="list-group-item"><i class="icon-ok text-danger"></i> Unlimited projects</li>
+                                <li class="list-group-item"><i class="icon-ok text-danger"></i> 27/7 support</li>
+                            </ul>
+        <div class="panel-footer">
+            <a class="btn btn-lg btn-block btn-danger" href="{% if user %}/upgrade/{{offers[1].id}}{% else %}/signup{% endif %}">{% if user %}Upgrade{% else %}Signup{% endif %}</a>
+        </div>
+     </div>
+
+      </div>
+       <div class="col-md-4">
+      <div class="panel panel-success">
+        <div class="panel-heading"><h3 class="text-center">{{ offers[2].name }}</h3></div>
+             <div class="panel-body text-center">
+                <p class="lead" style="font-size:40px"><strong>{{ offers[2].priceDisplay }}&euro; / month</strong></p>
+            </div>
+                           <ul class="list-group list-group-flush text-center">
+                                <li class="list-group-item"><i class="icon-ok text-danger"></i> Personal use</li>
+                                <li class="list-group-item"><i class="icon-ok text-danger"></i> Unlimited projects</li>
+                                <li class="list-group-item"><i class="icon-ok text-danger"></i> 27/7 support</li>
+                            </ul>
+        <div class="panel-footer">
+            <a class="btn btn-lg btn-block btn-danger" href="{% if user %}/upgrade/{{offers[2].id}}{% else %}/signup{% endif %}">{% if user %}Upgrade{% else %}Signup{% endif %}</a>
+        </div>
+     </div>
+
+      </div>
+      </div>
+</div>
+{% endblock %}
