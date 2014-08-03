@@ -44,7 +44,10 @@
 {% block footerInclude %}
 <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
 <script src="http://cdn.oesmith.co.uk/morris-0.5.1.min.js"></script>
+<script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
 <script src="/js/MorrisRealtime.js"></script>
 <script src="/js/RealtimeCallsLeft.js"></script>
+<script type="text/javascript">window.ENDPOINT_ID = "{{endpointID}}"</script>
 <script src="/js/Dashboard.js"></script>
+
 {% endblock %}

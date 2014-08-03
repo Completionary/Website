@@ -1,6 +1,10 @@
 // HTTP Port
 exports.httpPort = 3000;
 
+// HOST of this machine
+exports.host = '141.26.95.167'
+
+exports.thriftStreamingPort = 9090
 
 // Load environment specific settings
 var env = process.env.NODE_ENV;

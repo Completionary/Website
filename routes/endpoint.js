@@ -4,7 +4,8 @@ var monk = require('monk'),
     _ = require('underscore'),
     crypto = require('crypto'),
     paymill = require('../lib/paymill'),
-    render = require('../lib/render');
+    render = require('../lib/render'),
+    thriftStreaming = require('../lib/Streaming');
 
 var db = monk(config.mongoUrl);
 var endpoints = module.exports.endpoints = wrap(db.get('endpoints'));
@@ -45,7 +46,7 @@ function getAPIKey (user) {
 module.exports.get = function *dashboard (next) {
     // Get all endpoints for the logged in user
     var endpoint = yield endpoints.findOne({user_id: this.req.user._id});
-    this.body = yield render('dashboard', this, {endpoint: endpoint});
+    this.body = yield render('dashboard', this, {endpoint: endpoint, endpointID: 'wikipediaindex'});
 };
 
 // GET
