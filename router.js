@@ -36,7 +36,4 @@ module.exports = function (app) {
     // loggedout
     app.get('/', require('./routes/loggedOut'));
     app.get('/pricing', notAuthed('/upgrade'), endpoint.pricing)
-
-
-    app.get('/test', require('./routes/loggedOut').test);
 };

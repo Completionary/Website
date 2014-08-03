@@ -17,4 +17,17 @@ $(function () {
         current: 100
     });
     r.testInterval();
+
+    // SockJS
+    var sock = new SockJS('/websocket');
+    sock.onopen = function () {
+      sock.send(window.ENDPOINT_ID);
+      console.log('open');
+    };
+    sock.onmessage = function(e) {
+      console.log('message', JSON.parse(e.data));
+    };
+    sock.onclose = function() {
+      console.log('close');
+    };
 });

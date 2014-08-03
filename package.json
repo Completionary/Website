@@ -36,6 +36,7 @@
     "passport-github": "~0.1.5",
     "passport-local": "~1.0.0",
     "paymill-node": "~0.1.2",
+    "sockjs": "^0.3.9",
     "swig": "~1.4.1",
     "thrift": "^0.9.1",
     "thunkify": "^2.1.2",
