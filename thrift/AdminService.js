@@ -9,6 +9,7 @@ var ttypes = require('./admin_types');
 //HELPER FUNCTIONS AND STRUCTURES
 
 AdminService_addSingleTerm_args = function(args) {
+  this.apiToken = null;
   this.index = null;
   this.ID = null;
   this.inputs = null;
@@ -16,6 +17,9 @@ AdminService_addSingleTerm_args = function(args) {
   this.payload = null;
   this.weight = null;
   if (args) {
+    if (args.apiToken !== undefined) {
+      this.apiToken = args.apiToken;
+    }
     if (args.index !== undefined) {
       this.index = args.index;
     }
@@ -52,19 +56,26 @@ AdminService_addSingleTerm_args.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRING) {
-        this.index = input.readString();
+        this.apiToken = input.readString();
       } else {
         input.skip(ftype);
       }
       break;
       case 2:
       if (ftype == Thrift.Type.STRING) {
-        this.ID = input.readString();
+        this.index = input.readString();
       } else {
         input.skip(ftype);
       }
       break;
       case 3:
+      if (ftype == Thrift.Type.STRING) {
+        this.ID = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
       if (ftype == Thrift.Type.LIST) {
         var _size8 = 0;
         var _rtmp312;
@@ -84,21 +95,21 @@ AdminService_addSingleTerm_args.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
-      case 4:
+      case 5:
       if (ftype == Thrift.Type.STRING) {
         this.outputField = input.readString();
       } else {
         input.skip(ftype);
       }
       break;
-      case 5:
+      case 6:
       if (ftype == Thrift.Type.STRING) {
         this.payload = input.readString();
       } else {
         input.skip(ftype);
       }
       break;
-      case 6:
+      case 7:
       if (ftype == Thrift.Type.I32) {
         this.weight = input.readI32();
       } else {
@@ -116,18 +127,23 @@ AdminService_addSingleTerm_args.prototype.read = function(input) {
 
 AdminService_addSingleTerm_args.prototype.write = function(output) {
   output.writeStructBegin('AdminService_addSingleTerm_args');
+  if (this.apiToken !== null && this.apiToken !== undefined) {
+    output.writeFieldBegin('apiToken', Thrift.Type.STRING, 1);
+    output.writeString(this.apiToken);
+    output.writeFieldEnd();
+  }
   if (this.index !== null && this.index !== undefined) {
-    output.writeFieldBegin('index', Thrift.Type.STRING, 1);
+    output.writeFieldBegin('index', Thrift.Type.STRING, 2);
     output.writeString(this.index);
     output.writeFieldEnd();
   }
   if (this.ID !== null && this.ID !== undefined) {
-    output.writeFieldBegin('ID', Thrift.Type.STRING, 2);
+    output.writeFieldBegin('ID', Thrift.Type.STRING, 3);
     output.writeString(this.ID);
     output.writeFieldEnd();
   }
   if (this.inputs !== null && this.inputs !== undefined) {
-    output.writeFieldBegin('inputs', Thrift.Type.LIST, 3);
+    output.writeFieldBegin('inputs', Thrift.Type.LIST, 4);
     output.writeListBegin(Thrift.Type.STRING, this.inputs.length);
     for (var iter15 in this.inputs)
     {
@@ -141,17 +157,17 @@ AdminService_addSingleTerm_args.prototype.write = function(output) {
     output.writeFieldEnd();
   }
   if (this.outputField !== null && this.outputField !== undefined) {
-    output.writeFieldBegin('outputField', Thrift.Type.STRING, 4);
+    output.writeFieldBegin('outputField', Thrift.Type.STRING, 5);
     output.writeString(this.outputField);
     output.writeFieldEnd();
   }
   if (this.payload !== null && this.payload !== undefined) {
-    output.writeFieldBegin('payload', Thrift.Type.STRING, 5);
+    output.writeFieldBegin('payload', Thrift.Type.STRING, 6);
     output.writeString(this.payload);
     output.writeFieldEnd();
   }
   if (this.weight !== null && this.weight !== undefined) {
-    output.writeFieldBegin('weight', Thrift.Type.I32, 6);
+    output.writeFieldBegin('weight', Thrift.Type.I32, 7);
     output.writeI32(this.weight);
     output.writeFieldEnd();
   }
@@ -214,9 +230,13 @@ AdminService_addSingleTerm_result.prototype.write = function(output) {
 };
 
 AdminService_addTerms_args = function(args) {
+  this.apiToken = null;
   this.index = null;
   this.terms = null;
   if (args) {
+    if (args.apiToken !== undefined) {
+      this.apiToken = args.apiToken;
+    }
     if (args.index !== undefined) {
       this.index = args.index;
     }
@@ -241,12 +261,19 @@ AdminService_addTerms_args.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRING) {
-        this.index = input.readString();
+        this.apiToken = input.readString();
       } else {
         input.skip(ftype);
       }
       break;
       case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.index = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
       if (ftype == Thrift.Type.LIST) {
         var _size16 = 0;
         var _rtmp320;
@@ -278,13 +305,18 @@ AdminService_addTerms_args.prototype.read = function(input) {
 
 AdminService_addTerms_args.prototype.write = function(output) {
   output.writeStructBegin('AdminService_addTerms_args');
+  if (this.apiToken !== null && this.apiToken !== undefined) {
+    output.writeFieldBegin('apiToken', Thrift.Type.STRING, 1);
+    output.writeString(this.apiToken);
+    output.writeFieldEnd();
+  }
   if (this.index !== null && this.index !== undefined) {
-    output.writeFieldBegin('index', Thrift.Type.STRING, 1);
+    output.writeFieldBegin('index', Thrift.Type.STRING, 2);
     output.writeString(this.index);
     output.writeFieldEnd();
   }
   if (this.terms !== null && this.terms !== undefined) {
-    output.writeFieldBegin('terms', Thrift.Type.LIST, 2);
+    output.writeFieldBegin('terms', Thrift.Type.LIST, 3);
     output.writeListBegin(Thrift.Type.STRUCT, this.terms.length);
     for (var iter23 in this.terms)
     {
@@ -356,9 +388,13 @@ AdminService_addTerms_result.prototype.write = function(output) {
 };
 
 AdminService_deleteSingleTerm_args = function(args) {
+  this.apiToken = null;
   this.index = null;
   this.ID = null;
   if (args) {
+    if (args.apiToken !== undefined) {
+      this.apiToken = args.apiToken;
+    }
     if (args.index !== undefined) {
       this.index = args.index;
     }
@@ -383,12 +419,19 @@ AdminService_deleteSingleTerm_args.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRING) {
-        this.index = input.readString();
+        this.apiToken = input.readString();
       } else {
         input.skip(ftype);
       }
       break;
       case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.index = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
       if (ftype == Thrift.Type.STRING) {
         this.ID = input.readString();
       } else {
@@ -406,13 +449,18 @@ AdminService_deleteSingleTerm_args.prototype.read = function(input) {
 
 AdminService_deleteSingleTerm_args.prototype.write = function(output) {
   output.writeStructBegin('AdminService_deleteSingleTerm_args');
+  if (this.apiToken !== null && this.apiToken !== undefined) {
+    output.writeFieldBegin('apiToken', Thrift.Type.STRING, 1);
+    output.writeString(this.apiToken);
+    output.writeFieldEnd();
+  }
   if (this.index !== null && this.index !== undefined) {
-    output.writeFieldBegin('index', Thrift.Type.STRING, 1);
+    output.writeFieldBegin('index', Thrift.Type.STRING, 2);
     output.writeString(this.index);
     output.writeFieldEnd();
   }
   if (this.ID !== null && this.ID !== undefined) {
-    output.writeFieldBegin('ID', Thrift.Type.STRING, 2);
+    output.writeFieldBegin('ID', Thrift.Type.STRING, 3);
     output.writeString(this.ID);
     output.writeFieldEnd();
   }
@@ -475,9 +523,13 @@ AdminService_deleteSingleTerm_result.prototype.write = function(output) {
 };
 
 AdminService_deleteTerms_args = function(args) {
+  this.apiToken = null;
   this.index = null;
   this.ID = null;
   if (args) {
+    if (args.apiToken !== undefined) {
+      this.apiToken = args.apiToken;
+    }
     if (args.index !== undefined) {
       this.index = args.index;
     }
@@ -502,12 +554,19 @@ AdminService_deleteTerms_args.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRING) {
-        this.index = input.readString();
+        this.apiToken = input.readString();
       } else {
         input.skip(ftype);
       }
       break;
       case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.index = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
       if (ftype == Thrift.Type.LIST) {
         var _size24 = 0;
         var _rtmp328;
@@ -538,13 +597,18 @@ AdminService_deleteTerms_args.prototype.read = function(input) {
 
 AdminService_deleteTerms_args.prototype.write = function(output) {
   output.writeStructBegin('AdminService_deleteTerms_args');
+  if (this.apiToken !== null && this.apiToken !== undefined) {
+    output.writeFieldBegin('apiToken', Thrift.Type.STRING, 1);
+    output.writeString(this.apiToken);
+    output.writeFieldEnd();
+  }
   if (this.index !== null && this.index !== undefined) {
-    output.writeFieldBegin('index', Thrift.Type.STRING, 1);
+    output.writeFieldBegin('index', Thrift.Type.STRING, 2);
     output.writeString(this.index);
     output.writeFieldEnd();
   }
   if (this.ID !== null && this.ID !== undefined) {
-    output.writeFieldBegin('ID', Thrift.Type.LIST, 2);
+    output.writeFieldBegin('ID', Thrift.Type.LIST, 3);
     output.writeListBegin(Thrift.Type.STRING, this.ID.length);
     for (var iter31 in this.ID)
     {
@@ -616,8 +680,12 @@ AdminService_deleteTerms_result.prototype.write = function(output) {
 };
 
 AdminService_deleteIndex_args = function(args) {
+  this.apiToken = null;
   this.index = null;
   if (args) {
+    if (args.apiToken !== undefined) {
+      this.apiToken = args.apiToken;
+    }
     if (args.index !== undefined) {
       this.index = args.index;
     }
@@ -639,14 +707,18 @@ AdminService_deleteIndex_args.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRING) {
+        this.apiToken = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
         this.index = input.readString();
       } else {
         input.skip(ftype);
       }
       break;
-      case 0:
-        input.skip(ftype);
-        break;
       default:
         input.skip(ftype);
     }
@@ -658,8 +730,13 @@ AdminService_deleteIndex_args.prototype.read = function(input) {
 
 AdminService_deleteIndex_args.prototype.write = function(output) {
   output.writeStructBegin('AdminService_deleteIndex_args');
+  if (this.apiToken !== null && this.apiToken !== undefined) {
+    output.writeFieldBegin('apiToken', Thrift.Type.STRING, 1);
+    output.writeString(this.apiToken);
+    output.writeFieldEnd();
+  }
   if (this.index !== null && this.index !== undefined) {
-    output.writeFieldBegin('index', Thrift.Type.STRING, 1);
+    output.writeFieldBegin('index', Thrift.Type.STRING, 2);
     output.writeString(this.index);
     output.writeFieldEnd();
   }
@@ -722,8 +799,12 @@ AdminService_deleteIndex_result.prototype.write = function(output) {
 };
 
 AdminService_truncateIndex_args = function(args) {
+  this.apiToken = null;
   this.index = null;
   if (args) {
+    if (args.apiToken !== undefined) {
+      this.apiToken = args.apiToken;
+    }
     if (args.index !== undefined) {
       this.index = args.index;
     }
@@ -745,14 +826,18 @@ AdminService_truncateIndex_args.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRING) {
+        this.apiToken = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
         this.index = input.readString();
       } else {
         input.skip(ftype);
       }
       break;
-      case 0:
-        input.skip(ftype);
-        break;
       default:
         input.skip(ftype);
     }
@@ -764,8 +849,13 @@ AdminService_truncateIndex_args.prototype.read = function(input) {
 
 AdminService_truncateIndex_args.prototype.write = function(output) {
   output.writeStructBegin('AdminService_truncateIndex_args');
+  if (this.apiToken !== null && this.apiToken !== undefined) {
+    output.writeFieldBegin('apiToken', Thrift.Type.STRING, 1);
+    output.writeString(this.apiToken);
+    output.writeFieldEnd();
+  }
   if (this.index !== null && this.index !== undefined) {
-    output.writeFieldBegin('index', Thrift.Type.STRING, 1);
+    output.writeFieldBegin('index', Thrift.Type.STRING, 2);
     output.writeString(this.index);
     output.writeFieldEnd();
   }
@@ -834,16 +924,17 @@ AdminServiceClient = exports.Client = function(output, pClass) {
     this._reqs = {};
 };
 AdminServiceClient.prototype = {};
-AdminServiceClient.prototype.addSingleTerm = function(index, ID, inputs, outputField, payload, weight, callback) {
+AdminServiceClient.prototype.addSingleTerm = function(apiToken, index, ID, inputs, outputField, payload, weight, callback) {
   this.seqid += 1;
   this._reqs[this.seqid] = callback;
-  this.send_addSingleTerm(index, ID, inputs, outputField, payload, weight);
+  this.send_addSingleTerm(apiToken, index, ID, inputs, outputField, payload, weight);
 };
 
-AdminServiceClient.prototype.send_addSingleTerm = function(index, ID, inputs, outputField, payload, weight) {
+AdminServiceClient.prototype.send_addSingleTerm = function(apiToken, index, ID, inputs, outputField, payload, weight) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('addSingleTerm', Thrift.MessageType.CALL, this.seqid);
   var args = new AdminService_addSingleTerm_args();
+  args.apiToken = apiToken;
   args.index = index;
   args.ID = ID;
   args.inputs = inputs;
@@ -873,16 +964,17 @@ AdminServiceClient.prototype.recv_addSingleTerm = function(input,mtype,rseqid) {
   }
   return callback('addSingleTerm failed: unknown result');
 };
-AdminServiceClient.prototype.addTerms = function(index, terms, callback) {
+AdminServiceClient.prototype.addTerms = function(apiToken, index, terms, callback) {
   this.seqid += 1;
   this._reqs[this.seqid] = callback;
-  this.send_addTerms(index, terms);
+  this.send_addTerms(apiToken, index, terms);
 };
 
-AdminServiceClient.prototype.send_addTerms = function(index, terms) {
+AdminServiceClient.prototype.send_addTerms = function(apiToken, index, terms) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('addTerms', Thrift.MessageType.CALL, this.seqid);
   var args = new AdminService_addTerms_args();
+  args.apiToken = apiToken;
   args.index = index;
   args.terms = terms;
   args.write(output);
@@ -908,16 +1000,17 @@ AdminServiceClient.prototype.recv_addTerms = function(input,mtype,rseqid) {
   }
   return callback('addTerms failed: unknown result');
 };
-AdminServiceClient.prototype.deleteSingleTerm = function(index, ID, callback) {
+AdminServiceClient.prototype.deleteSingleTerm = function(apiToken, index, ID, callback) {
   this.seqid += 1;
   this._reqs[this.seqid] = callback;
-  this.send_deleteSingleTerm(index, ID);
+  this.send_deleteSingleTerm(apiToken, index, ID);
 };
 
-AdminServiceClient.prototype.send_deleteSingleTerm = function(index, ID) {
+AdminServiceClient.prototype.send_deleteSingleTerm = function(apiToken, index, ID) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('deleteSingleTerm', Thrift.MessageType.CALL, this.seqid);
   var args = new AdminService_deleteSingleTerm_args();
+  args.apiToken = apiToken;
   args.index = index;
   args.ID = ID;
   args.write(output);
@@ -943,16 +1036,17 @@ AdminServiceClient.prototype.recv_deleteSingleTerm = function(input,mtype,rseqid
   }
   return callback('deleteSingleTerm failed: unknown result');
 };
-AdminServiceClient.prototype.deleteTerms = function(index, ID, callback) {
+AdminServiceClient.prototype.deleteTerms = function(apiToken, index, ID, callback) {
   this.seqid += 1;
   this._reqs[this.seqid] = callback;
-  this.send_deleteTerms(index, ID);
+  this.send_deleteTerms(apiToken, index, ID);
 };
 
-AdminServiceClient.prototype.send_deleteTerms = function(index, ID) {
+AdminServiceClient.prototype.send_deleteTerms = function(apiToken, index, ID) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('deleteTerms', Thrift.MessageType.CALL, this.seqid);
   var args = new AdminService_deleteTerms_args();
+  args.apiToken = apiToken;
   args.index = index;
   args.ID = ID;
   args.write(output);
@@ -978,16 +1072,17 @@ AdminServiceClient.prototype.recv_deleteTerms = function(input,mtype,rseqid) {
   }
   return callback('deleteTerms failed: unknown result');
 };
-AdminServiceClient.prototype.deleteIndex = function(index, callback) {
+AdminServiceClient.prototype.deleteIndex = function(apiToken, index, callback) {
   this.seqid += 1;
   this._reqs[this.seqid] = callback;
-  this.send_deleteIndex(index);
+  this.send_deleteIndex(apiToken, index);
 };
 
-AdminServiceClient.prototype.send_deleteIndex = function(index) {
+AdminServiceClient.prototype.send_deleteIndex = function(apiToken, index) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('deleteIndex', Thrift.MessageType.CALL, this.seqid);
   var args = new AdminService_deleteIndex_args();
+  args.apiToken = apiToken;
   args.index = index;
   args.write(output);
   output.writeMessageEnd();
@@ -1012,16 +1107,17 @@ AdminServiceClient.prototype.recv_deleteIndex = function(input,mtype,rseqid) {
   }
   return callback('deleteIndex failed: unknown result');
 };
-AdminServiceClient.prototype.truncateIndex = function(index, callback) {
+AdminServiceClient.prototype.truncateIndex = function(apiToken, index, callback) {
   this.seqid += 1;
   this._reqs[this.seqid] = callback;
-  this.send_truncateIndex(index);
+  this.send_truncateIndex(apiToken, index);
 };
 
-AdminServiceClient.prototype.send_truncateIndex = function(index) {
+AdminServiceClient.prototype.send_truncateIndex = function(apiToken, index) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('truncateIndex', Thrift.MessageType.CALL, this.seqid);
   var args = new AdminService_truncateIndex_args();
+  args.apiToken = apiToken;
   args.index = index;
   args.write(output);
   output.writeMessageEnd();
@@ -1068,7 +1164,7 @@ AdminServiceProcessor.prototype.process_addSingleTerm = function(seqid, input, o
   var args = new AdminService_addSingleTerm_args();
   args.read(input);
   input.readMessageEnd();
-  this._handler.addSingleTerm(args.index, args.ID, args.inputs, args.outputField, args.payload, args.weight, function (err, result) {
+  this._handler.addSingleTerm(args.apiToken, args.index, args.ID, args.inputs, args.outputField, args.payload, args.weight, function (err, result) {
     var result = new AdminService_addSingleTerm_result((err != null ? err : {success: result}));
     output.writeMessageBegin("addSingleTerm", Thrift.MessageType.REPLY, seqid);
     result.write(output);
@@ -1081,7 +1177,7 @@ AdminServiceProcessor.prototype.process_addTerms = function(seqid, input, output
   var args = new AdminService_addTerms_args();
   args.read(input);
   input.readMessageEnd();
-  this._handler.addTerms(args.index, args.terms, function (err, result) {
+  this._handler.addTerms(args.apiToken, args.index, args.terms, function (err, result) {
     var result = new AdminService_addTerms_result((err != null ? err : {success: result}));
     output.writeMessageBegin("addTerms", Thrift.MessageType.REPLY, seqid);
     result.write(output);
@@ -1094,7 +1190,7 @@ AdminServiceProcessor.prototype.process_deleteSingleTerm = function(seqid, input
   var args = new AdminService_deleteSingleTerm_args();
   args.read(input);
   input.readMessageEnd();
-  this._handler.deleteSingleTerm(args.index, args.ID, function (err, result) {
+  this._handler.deleteSingleTerm(args.apiToken, args.index, args.ID, function (err, result) {
     var result = new AdminService_deleteSingleTerm_result((err != null ? err : {success: result}));
     output.writeMessageBegin("deleteSingleTerm", Thrift.MessageType.REPLY, seqid);
     result.write(output);
@@ -1107,7 +1203,7 @@ AdminServiceProcessor.prototype.process_deleteTerms = function(seqid, input, out
   var args = new AdminService_deleteTerms_args();
   args.read(input);
   input.readMessageEnd();
-  this._handler.deleteTerms(args.index, args.ID, function (err, result) {
+  this._handler.deleteTerms(args.apiToken, args.index, args.ID, function (err, result) {
     var result = new AdminService_deleteTerms_result((err != null ? err : {success: result}));
     output.writeMessageBegin("deleteTerms", Thrift.MessageType.REPLY, seqid);
     result.write(output);
@@ -1120,7 +1216,7 @@ AdminServiceProcessor.prototype.process_deleteIndex = function(seqid, input, out
   var args = new AdminService_deleteIndex_args();
   args.read(input);
   input.readMessageEnd();
-  this._handler.deleteIndex(args.index, function (err, result) {
+  this._handler.deleteIndex(args.apiToken, args.index, function (err, result) {
     var result = new AdminService_deleteIndex_result((err != null ? err : {success: result}));
     output.writeMessageBegin("deleteIndex", Thrift.MessageType.REPLY, seqid);
     result.write(output);
@@ -1133,7 +1229,7 @@ AdminServiceProcessor.prototype.process_truncateIndex = function(seqid, input, o
   var args = new AdminService_truncateIndex_args();
   args.read(input);
   input.readMessageEnd();
-  this._handler.truncateIndex(args.index, function (err, result) {
+  this._handler.truncateIndex(args.apiToken, args.index, function (err, result) {
     var result = new AdminService_truncateIndex_result((err != null ? err : {success: result}));
     output.writeMessageBegin("truncateIndex", Thrift.MessageType.REPLY, seqid);
     result.write(output);

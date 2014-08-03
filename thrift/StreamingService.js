@@ -94,13 +94,21 @@ StreamingService_establishStream_args.prototype.write = function(output) {
 
 StreamingService_establishStream_result = function(args) {
   this.indexUnkown = null;
+  this.unableToConnect = null;
   if (args instanceof exceptions_ttypes.IndexUnknownException) {
     this.indexUnkown = args;
+    return;
+  }
+  if (args instanceof ttypes.UnableToConnectToStreamingClientException) {
+    this.unableToConnect = args;
     return;
   }
   if (args) {
     if (args.indexUnkown !== undefined) {
       this.indexUnkown = args.indexUnkown;
+    }
+    if (args.unableToConnect !== undefined) {
+      this.unableToConnect = args.unableToConnect;
     }
   }
 };
@@ -126,9 +134,14 @@ StreamingService_establishStream_result.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
-      case 0:
+      case 2:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.unableToConnect = new ttypes.UnableToConnectToStreamingClientException();
+        this.unableToConnect.read(input);
+      } else {
         input.skip(ftype);
-        break;
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -143,6 +156,11 @@ StreamingService_establishStream_result.prototype.write = function(output) {
   if (this.indexUnkown !== null && this.indexUnkown !== undefined) {
     output.writeFieldBegin('indexUnkown', Thrift.Type.STRUCT, 1);
     this.indexUnkown.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.unableToConnect !== null && this.unableToConnect !== undefined) {
+    output.writeFieldBegin('unableToConnect', Thrift.Type.STRUCT, 2);
+    this.unableToConnect.write(output);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -261,6 +279,16 @@ StreamingService_disconnectStream_result.prototype.write = function(output) {
 };
 
 StreamingService_disconnectFromStatisticStream_args = function(args) {
+  this.hostName = null;
+  this.port = null;
+  if (args) {
+    if (args.hostName !== undefined) {
+      this.hostName = args.hostName;
+    }
+    if (args.port !== undefined) {
+      this.port = args.port;
+    }
+  }
 };
 StreamingService_disconnectFromStatisticStream_args.prototype = {};
 StreamingService_disconnectFromStatisticStream_args.prototype.read = function(input) {
@@ -274,7 +302,25 @@ StreamingService_disconnectFromStatisticStream_args.prototype.read = function(in
     if (ftype == Thrift.Type.STOP) {
       break;
     }
-    input.skip(ftype);
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.hostName = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.I32) {
+        this.port = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
     input.readFieldEnd();
   }
   input.readStructEnd();
@@ -283,6 +329,16 @@ StreamingService_disconnectFromStatisticStream_args.prototype.read = function(in
 
 StreamingService_disconnectFromStatisticStream_args.prototype.write = function(output) {
   output.writeStructBegin('StreamingService_disconnectFromStatisticStream_args');
+  if (this.hostName !== null && this.hostName !== undefined) {
+    output.writeFieldBegin('hostName', Thrift.Type.STRING, 1);
+    output.writeString(this.hostName);
+    output.writeFieldEnd();
+  }
+  if (this.port !== null && this.port !== undefined) {
+    output.writeFieldBegin('port', Thrift.Type.I32, 2);
+    output.writeI32(this.port);
+    output.writeFieldEnd();
+  }
   output.writeFieldStop();
   output.writeStructEnd();
   return;
@@ -357,6 +413,9 @@ StreamingServiceClient.prototype.recv_establishStream = function(input,mtype,rse
   if (null !== result.indexUnkown) {
     return callback(result.indexUnkown);
   }
+  if (null !== result.unableToConnect) {
+    return callback(result.unableToConnect);
+  }
   callback(null)
 };
 StreamingServiceClient.prototype.disconnectStream = function(index, hostName, port, callback) {
@@ -392,16 +451,18 @@ StreamingServiceClient.prototype.recv_disconnectStream = function(input,mtype,rs
 
   callback(null)
 };
-StreamingServiceClient.prototype.disconnectFromStatisticStream = function(callback) {
+StreamingServiceClient.prototype.disconnectFromStatisticStream = function(hostName, port, callback) {
   this.seqid += 1;
   this._reqs[this.seqid] = callback;
-  this.send_disconnectFromStatisticStream();
+  this.send_disconnectFromStatisticStream(hostName, port);
 };
 
-StreamingServiceClient.prototype.send_disconnectFromStatisticStream = function() {
+StreamingServiceClient.prototype.send_disconnectFromStatisticStream = function(hostName, port) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('disconnectFromStatisticStream', Thrift.MessageType.CALL, this.seqid);
   var args = new StreamingService_disconnectFromStatisticStream_args();
+  args.hostName = hostName;
+  args.port = port;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
@@ -470,7 +531,7 @@ StreamingServiceProcessor.prototype.process_disconnectFromStatisticStream = func
   var args = new StreamingService_disconnectFromStatisticStream_args();
   args.read(input);
   input.readMessageEnd();
-  this._handler.disconnectFromStatisticStream(function (err, result) {
+  this._handler.disconnectFromStatisticStream(args.hostName, args.port, function (err, result) {
     var result = new StreamingService_disconnectFromStatisticStream_result((err != null ? err : {success: result}));
     output.writeMessageBegin("disconnectFromStatisticStream", Thrift.MessageType.REPLY, seqid);
     result.write(output);

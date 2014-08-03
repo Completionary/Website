@@ -141,6 +141,22 @@ StreamingClientServiceClient.prototype.send_updateStatistics = function(stream) 
   output.writeMessageEnd();
   return this.output.flush();
 };
+
+StreamingClientServiceClient.prototype.recv_updateStatistics = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new StreamingClientService_updateStatistics_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  callback(null)
+};
 StreamingClientServiceProcessor = exports.Processor = function(handler) {
   this._handler = handler
 }
@@ -163,6 +179,12 @@ StreamingClientServiceProcessor.prototype.process_updateStatistics = function(se
   var args = new StreamingClientService_updateStatistics_args();
   args.read(input);
   input.readMessageEnd();
-  this._handler.updateStatistics(args.stream)
+  this._handler.updateStatistics(args.stream, function (err, result) {
+    var result = new StreamingClientService_updateStatistics_result((err != null ? err : {success: result}));
+    output.writeMessageBegin("updateStatistics", Thrift.MessageType.REPLY, seqid);
+    result.write(output);
+    output.writeMessageEnd();
+    output.flush();
+  })
 }
 
