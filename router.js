@@ -30,8 +30,9 @@ module.exports = function (app) {
 
 
     // api calls
-    app.get('/api', api.doGet)
-    app.post('/api', api.doPost)
+    app.get('/api', api.doGet);
+    app.post('/api', api.doPost);
+ //   app.get('/tapi', require('./lib/thriftApi'));
 
     // loggedout
     app.get('/', require('./routes/loggedOut'));
