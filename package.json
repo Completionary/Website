@@ -20,6 +20,7 @@
     "co-body": "0.0.2",
     "co-monk": "~1.0.0",
     "co-paymill": "^1.0.2",
+    "co-thrift": "^0.1.0",
     "co-views": "~0.2.0",
     "koa": "~0.8.1",
     "koa-csrf": "~2.1.2",
@@ -36,6 +37,8 @@
     "passport-local": "~1.0.0",
     "paymill-node": "~0.1.2",
     "swig": "~1.4.1",
+    "thrift": "^0.9.1",
+    "thunkify": "^2.1.2",
     "underscore": "~1.6.0",
     "validator": "~3.16.1"
   }

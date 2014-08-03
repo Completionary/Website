@@ -41,4 +41,5 @@ require('./router')(app);
 if (!module.parent) {
     app.listen(config.httpPort);
     console.log('Listening on port', config.httpPort);
+    require('./lib/thriftStreaming');
 }
