@@ -353,6 +353,7 @@ StreamingServiceClient.prototype.recv_establishStream = function(input,mtype,rse
   var result = new StreamingService_establishStream_result();
   result.read(input);
   input.readMessageEnd();
+
   if (null !== result.indexUnkown) {
     return callback(result.indexUnkown);
   }

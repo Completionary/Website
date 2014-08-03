@@ -47,7 +47,29 @@ module.exports.doPost = function *createUserHandler(next) {
     }
     else {
         console.log ("found apikey: " + user.apiKey + "  user id: " + user.user_id);
-        console.log(body.token + "received api call");
+        console.log(body.token + "received api call and now making call to backend via thrift");
+
+
+        var thriftWrapper = require('co-thrift'),
+            thrift = require('thrift'),
+            AdminService = require('../thrift/AdminService'),
+            StramingClientService = require('../thrift/StreamingClientService');
+        var transport = thrift.TFramedTransport;
+        var protocol = thrift.TBinaryProtocol;
+
+        // CLIENT
+        var connection = thrift.createConnection('metalcon2.physik.uni-mainz.de', 5000, {
+            transport: transport,
+            protocol: protocol
+        });
+
+        connection.on('error', function (err) {
+            console.log(err);
+        });
+
+        var client = thrift.createClient(thriftWrapper(AdminService.Client), connection);
+        var response = yield client.addSingleTerm(body.token, "1", ["hallo", "hallo welt"], "hallo a welt", "testpayload", 8);
+        console.log("send single term data to autocomplete client. - response: " + response);
         this.response.redirect('/api');
     }
 };

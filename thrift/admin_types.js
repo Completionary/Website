@@ -8,7 +8,7 @@ var Thrift = require('thrift').Thrift;
 var ttypes = module.exports = {};
 SuggestionField = module.exports.SuggestionField = function(args) {
   this.ID = null;
-  this.output = null;
+  this.outputField = null;
   this.input = null;
   this.payload = null;
   this.weight = null;
@@ -16,8 +16,8 @@ SuggestionField = module.exports.SuggestionField = function(args) {
     if (args.ID !== undefined) {
       this.ID = args.ID;
     }
-    if (args.output !== undefined) {
-      this.output = args.output;
+    if (args.outputField !== undefined) {
+      this.outputField = args.outputField;
     }
     if (args.input !== undefined) {
       this.input = args.input;
@@ -53,7 +53,7 @@ SuggestionField.prototype.read = function(input) {
       break;
       case 2:
       if (ftype == Thrift.Type.STRING) {
-        this.output = input.readString();
+        this.outputField = input.readString();
       } else {
         input.skip(ftype);
       }
@@ -108,9 +108,9 @@ SuggestionField.prototype.write = function(output) {
     output.writeString(this.ID);
     output.writeFieldEnd();
   }
-  if (this.output !== null && this.output !== undefined) {
-    output.writeFieldBegin('output', Thrift.Type.STRING, 2);
-    output.writeString(this.output);
+  if (this.outputField !== null && this.outputField !== undefined) {
+    output.writeFieldBegin('outputField', Thrift.Type.STRING, 2);
+    output.writeString(this.outputField);
     output.writeFieldEnd();
   }
   if (this.input !== null && this.input !== undefined) {

@@ -12,7 +12,7 @@ AdminService_addSingleTerm_args = function(args) {
   this.index = null;
   this.ID = null;
   this.inputs = null;
-  this.output = null;
+  this.outputField = null;
   this.payload = null;
   this.weight = null;
   if (args) {
@@ -25,8 +25,8 @@ AdminService_addSingleTerm_args = function(args) {
     if (args.inputs !== undefined) {
       this.inputs = args.inputs;
     }
-    if (args.output !== undefined) {
-      this.output = args.output;
+    if (args.outputField !== undefined) {
+      this.outputField = args.outputField;
     }
     if (args.payload !== undefined) {
       this.payload = args.payload;
@@ -86,7 +86,7 @@ AdminService_addSingleTerm_args.prototype.read = function(input) {
       break;
       case 4:
       if (ftype == Thrift.Type.STRING) {
-        this.output = input.readString();
+        this.outputField = input.readString();
       } else {
         input.skip(ftype);
       }
@@ -140,9 +140,9 @@ AdminService_addSingleTerm_args.prototype.write = function(output) {
     output.writeListEnd();
     output.writeFieldEnd();
   }
-  if (this.output !== null && this.output !== undefined) {
-    output.writeFieldBegin('output', Thrift.Type.STRING, 4);
-    output.writeString(this.output);
+  if (this.outputField !== null && this.outputField !== undefined) {
+    output.writeFieldBegin('outputField', Thrift.Type.STRING, 4);
+    output.writeString(this.outputField);
     output.writeFieldEnd();
   }
   if (this.payload !== null && this.payload !== undefined) {
@@ -834,20 +834,20 @@ AdminServiceClient = exports.Client = function(output, pClass) {
     this._reqs = {};
 };
 AdminServiceClient.prototype = {};
-AdminServiceClient.prototype.addSingleTerm = function(index, ID, inputs, output, payload, weight, callback) {
+AdminServiceClient.prototype.addSingleTerm = function(index, ID, inputs, outputField, payload, weight, callback) {
   this.seqid += 1;
   this._reqs[this.seqid] = callback;
-  this.send_addSingleTerm(index, ID, inputs, output, payload, weight);
+  this.send_addSingleTerm(index, ID, inputs, outputField, payload, weight);
 };
 
-AdminServiceClient.prototype.send_addSingleTerm = function(index, ID, inputs, output, payload, weight) {
+AdminServiceClient.prototype.send_addSingleTerm = function(index, ID, inputs, outputField, payload, weight) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('addSingleTerm', Thrift.MessageType.CALL, this.seqid);
   var args = new AdminService_addSingleTerm_args();
   args.index = index;
   args.ID = ID;
   args.inputs = inputs;
-  args.output = output;
+  args.outputField = outputField;
   args.payload = payload;
   args.weight = weight;
   args.write(output);
@@ -1068,7 +1068,7 @@ AdminServiceProcessor.prototype.process_addSingleTerm = function(seqid, input, o
   var args = new AdminService_addSingleTerm_args();
   args.read(input);
   input.readMessageEnd();
-  this._handler.addSingleTerm(args.index, args.ID, args.inputs, args.output, args.payload, args.weight, function (err, result) {
+  this._handler.addSingleTerm(args.index, args.ID, args.inputs, args.outputField, args.payload, args.weight, function (err, result) {
     var result = new AdminService_addSingleTerm_result((err != null ? err : {success: result}));
     output.writeMessageBegin("addSingleTerm", Thrift.MessageType.REPLY, seqid);
     result.write(output);
