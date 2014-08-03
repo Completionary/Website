@@ -7,10 +7,10 @@ var monk = require('monk'),
     render = require('../lib/render');
 
 var db = monk(config.mongoUrl);
-var endpoints = module.exports.users = wrap(db.get('endpoints'));
+var endpoints = module.exports.endpoints = wrap(db.get('endpoints'));
 
 // This is not a post request anymore!
-// We call this from the user creation since every user only has endpoint.
+// We call this from the user creation since every user only has one endpoint.
 //
 // First we request an API key from the internal API (Currently we only
 // generate a fake random sha1 hash as a placeholder) After we got a key we

@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+{% if errors %}
+<ul>
+    {% for error in errors %}
+        <li>{{ loop.key }} - {{ error }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+This is a test page for development time of the API
+<form role="form" method="POST" action="/api">
+  <div class="form-group">
+    <input required type="token" placeholder="api token" name="token" value="{{data.token}}">
+  </div>
+  <div class="form-group">
+    <input required type="email" name="email" value="asdf@asdf.de">
+  </div>
+  <input type="hidden" name="_csrf" value="{{ _csrf }}">
+  <div class="form-group">
+    <button type="submit" class="btn btn-default">Send</button>
+  </div>
+</form>
+{% endblock %}

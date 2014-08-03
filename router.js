@@ -3,6 +3,7 @@ var passport = require('./routes/auth'),
     notAuthed = passport.notAuthed,
     user = require('./routes/user'),
     endpoint = require('./routes/endpoint');
+    api = require('./routes/api');
 
 module.exports = function (app) {
     app.get('/auth/github', passport.authenticate('github', { scope: ['user:email'] }));
@@ -26,6 +27,11 @@ module.exports = function (app) {
     app.get('/upgrade', authed, endpoint.pricing);
     app.post('/upgrade', authed, endpoint.upgrade);
     app.get('/upgrade/:offerId', authed, endpoint.payment);
+
+
+    // api calls
+    app.get('/api', api.doGet)
+    app.post('/api', api.doPost)
 
     // loggedout
     app.get('/', require('./routes/loggedOut'));
