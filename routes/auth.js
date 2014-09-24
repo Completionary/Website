@@ -6,7 +6,8 @@ var passport = require('koa-passport'),
     bcrypt = require('co-bcrypt'),
     createUser = require('./user').createUser,
     users = require('./user').users,
-    config = require('../config');
+    config = require('../config'),
+    crypto = require('crypto');
 
 // Use passport for OAuth
 // GITHUB
@@ -32,6 +33,7 @@ passport.use(new GithubStrategy(config.github,
             // We will get an error if the email address is already in use.
             try {
                 var newUser = yield createUser(u);
+                return newUser;
             } catch(e) {
                 if (e.user && e.msg === 'email in use') {
                     // Good, we already have an user with the same email.
@@ -53,7 +55,7 @@ passport.use(new GithubStrategy(config.github,
                 }
             }
 
-            return newUser;
+
         })(done);
     }
 ));
@@ -99,6 +101,8 @@ passport.deserializeUser(function (id, done) {
 });
 
 module.exports = passport;
+
+// Helper
 module.exports.authed = function *authed(next){
   if (this.req.isAuthenticated()){
     yield next;
@@ -116,5 +120,5 @@ module.exports.notAuthed = function (redirectUrl) {
         } else {
             this.redirect(redirectUrl);
         }
-    }
-}
+    };
+};

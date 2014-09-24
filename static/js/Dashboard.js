@@ -1,23 +1,4 @@
 $(function () {
-    var m = new MorrisRealtime({
-        element: 'apiRequestsRealtime',
-        data: [],
-        xkey: 'ts',
-        ykeys: ['requests'],
-        labels: ['Requests'],
-        ymin: 'auto',
-        fillOpacity: 0.5
-    });
-    m.start();
-    m.testInterval();
-
-    var r = new RealtimeCallsLeft({
-        element: 'apiCallsProgress',
-        max: 1000,
-        current: 100
-    });
-    r.testInterval();
-
     // SockJS
     var sock = new SockJS('/websocket');
     sock.onopen = function () {
@@ -30,4 +11,24 @@ $(function () {
     sock.onclose = function() {
       console.log('close');
     };
+
+    // // API Chart
+    // var apiChart = c3.generate({
+    //   data: {
+    //     columns: [
+    //       ['used', 98]
+    //     ],
+    //     names: {
+    //       'used': 'Used'
+    //     },
+    //     type : 'gauge'
+    //   },
+    //   color: {
+    //     pattern: ['#2ecc71', '#e67e22', '#e74c3c'],
+    //     threshold: {
+    //       values: [60, 90, 100]
+    //     }
+    //   },
+    //   bindto: '#apiChart'
+    // });
 });

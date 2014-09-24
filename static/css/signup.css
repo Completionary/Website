@@ -1,0 +1,32 @@
+body, html {
+  margin: 0;
+  padding:0;
+}
+
+body {
+  background-image: url("/img/index.svg");
+}
+
+#signup-box {
+  margin-left: auto;
+  margin-right: auto;
+  width: 250px;
+  padding: 25px;
+  background-color: rgb(27, 188, 155);
+  border: 1px #13826b solid;
+  -moz-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+
+}
+
+#signup-box input {
+  width: 100%;
+
+}
+
+.signup-middle {
+  -moz-radius: 0px;
+  -webkit-border-radius: 0px;
+  border-radius: 0px;
+}

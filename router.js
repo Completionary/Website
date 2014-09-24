@@ -2,7 +2,8 @@ var passport = require('./routes/auth'),
     authed = passport.authed,
     notAuthed = passport.notAuthed,
     user = require('./routes/user'),
-    endpoint = require('./routes/endpoint');
+    endpoint = require('./routes/endpoint'),
+    dashboard = require('./routes/dashboard.js'),
     api = require('./routes/api');
 
 module.exports = function (app) {
@@ -14,15 +15,25 @@ module.exports = function (app) {
     app.get('/login', notAuthed('/dashboard'), user.login);
     app.post('/user', notAuthed('/dashboard'), user.create);
 
+    // Password Forgotten
+    app.get('/forgot', notAuthed('/dashboard'), user.forgot);
+    app.post('/forgot', notAuthed('/dashboard'), user.doForgot);
+
     // Secure routes
     app.get('/profile', authed, user.profile);
-    app.get('/logout', authed, function* (next){
+    app.get('/logout', authed, function* (){
       this.req.logout();
       this.response.redirect('/');
     });
 
+    // Dashboard
+    app.get('/dashboard', authed, dashboard.get);
+    app.get('/dashboard/analytics', authed, dashboard.getAnalytics);
+    app.get('/dashboard/settings', authed, dashboard.getSettings);
+    app.get('/dashboard/index', authed, dashboard.getIndexOps);
+    app.get('/dashboard/documentation', authed, dashboard.getDocumentation);
+
     // endpoint
-    app.get('/dashboard', authed, endpoint.get);
     app.post('/endpoint', authed, endpoint.create);
     app.get('/upgrade', authed, endpoint.pricing);
     app.post('/upgrade', authed, endpoint.upgrade);
@@ -30,11 +41,11 @@ module.exports = function (app) {
 
 
     // api calls
-    app.get('/api', api.doGet);
-    app.post('/api', api.doPost);
+    // app.get('/api', api.doGet);
+    // app.post('/api', api.doPost);
  //   app.get('/tapi', require('./lib/thriftApi'));
 
     // loggedout
     app.get('/', require('./routes/loggedOut'));
-    app.get('/pricing', notAuthed('/upgrade'), endpoint.pricing)
+    app.get('/pricing', notAuthed('/upgrade'), endpoint.pricing);
 };

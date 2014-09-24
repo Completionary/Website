@@ -29,7 +29,7 @@ module.exports.create = function *createEndpoint (user) {
     });
 
     if (e === null) {
-        throw(Error('database error!'))
+        throw(Error('database error!'));
     }
 
     return e;
@@ -39,15 +39,6 @@ function getAPIKey (user) {
     var current_date = (new Date()).valueOf().toString();
     return crypto.createHash('sha1').update(current_date + user.name).digest('hex');
 }
-
-// GET
-// Shows the dashboard
-// We search for the dashboard
-module.exports.get = function *dashboard (next) {
-    // Get all endpoints for the logged in user
-    var endpoint = yield endpoints.findOne({user_id: this.req.user._id});
-    this.body = yield render('dashboard', this, {endpoint: endpoint, endpointID: 'wikipediaindex'});
-};
 
 // GET
 // Shows the pricing table
@@ -79,7 +70,6 @@ module.exports.upgrade = function *(next) {
         client: this.req.user.paymillId
     });
 
-    console.log(payment);
     var sub = yield paymill.subscriptions.create({
         client: this.req.user.paymillId,
         offer: this.request.body.offerId,

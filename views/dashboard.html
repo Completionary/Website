@@ -1,14 +1,108 @@
-{% extends 'layout.html' %}
+{% extends 'newDash.html' %}
 
 {% block head %}
 <link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.5.1.css">
+<link rel="stylesheet" href="/css/vendor/epoch.min.css">
 {% endblock %}
 
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-<div class="container">
-  	<h1>API Key: {{ endpoint.apiKey }}</h1>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <div class="sidebar-user">
+                <ul class="nav nav-sidebar">
+                    <li>
+                        <h5>{{user.name}}</h5>
+                        <h6>{{user.email}}</h6>
+                    </li>
+                </ul>
+            </div>
+            <ul class="nav nav-sidebar">
+                <li>
+                  <a href="/dashboard">
+                    <div clas="row sidebar-item">
+                      <div class="col-sm-3">
+                        <span class="glyphicon glyphicon-dashboard"></span>
+                      </div>
+                      <div class="col-sm-8">
+                        Dashboard
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a href="/dashboard/analytics">
+                    <div clas="row sidebar-item">
+                      <div class="col-sm-3">
+                        <span class="glyphicon glyphicon-stats"></span>
+                      </div>
+                      <div class="col-sm-8">
+                        Analytics
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a href="/dashboard/settings">
+                    <div clas="row sidebar-item">
+                      <div class="col-sm-3">
+                        <span class="glyphicon glyphicon-cog"></span>
+                      </div>
+                      <div class="col-sm-8">
+                        Settings
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a href="/dashboard/index">
+                    <div clas="row sidebar-item">
+                      <div class="col-sm-3">
+                        <span class="glyphicon glyphicon-import"></span>
+                      </div>
+                      <div class="col-sm-8">
+                        Index
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a href="/dashboard/documentation">
+                    <div clas="row sidebar-item">
+                      <div class="col-sm-3">
+                        <span class="glyphicon glyphicon-book"></span>
+                      </div>
+                      <div class="col-sm-8">
+                        Documentation
+                      </div>
+                    </div>
+                  </a>
+                </li>
+            </ul>
+            <div id="apiChart">
+            </div>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 dashboard-heading">
+          <div class="pull-left">
+          {% block dashboardHeading %}
+            <h1>Dashboard</h1>
+          {% endblock %}
+          </div>
+          <div class="pull-right">
+            <a href="/logout">Logout</a>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          {% block dashboard %}
+
+          {% endblock %}
+        </div>
+    </div>
+  	<!--<h1><!-- API Key: {{ endpoint.apiKey }}</h1>
 
 	<ul>
 		<li>
@@ -23,7 +117,7 @@
             <a href="/pricing" class="btn btn-primary btn-lg">
                 Upgrade
             </a>
-			Box with subscription status --> link to upgrades of payment plan
+			Box with subscription status --\> link to upgrades of payment plan
 		</li>
 		<li>
 			<div id="apiRequestsRealtime"></div>
@@ -37,7 +131,7 @@
 		<li>
 			Box with automated tools: connect with CMS, upload CSV index,...
 		</li>
-	</ul>
+	</ul> -->
 </div>
 {% endblock %}
 
@@ -45,9 +139,13 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
 <script src="http://cdn.oesmith.co.uk/morris-0.5.1.min.js"></script>
 <script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
-<script src="/js/MorrisRealtime.js"></script>
-<script src="/js/RealtimeCallsLeft.js"></script>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<!-- <script src="/js/vendor/c3.min.js"></script> -->
+<script src="/js/vendor/epoch.min.js"></script>
+<!-- <script src="/js/MorrisRealtime.js"></script>
+<script src="/js/RealtimeCallsLeft.js"></script> -->
 <script type="text/javascript">window.ENDPOINT_ID = "{{endpointID}}"</script>
 <script src="/js/Dashboard.js"></script>
-
+{% block dashInclude %}
+{% endblock %}
 {% endblock %}

@@ -40,7 +40,8 @@ require('./router')(app);
 
 if (!module.parent) {
     var server = app.listen(config.httpPort);
-    require('./lib/Streaming').initSockjs(server);
+    require('./lib/Streaming').initSockjs
+    (server);
     console.log('Listening on port', config.httpPort);
     // require('./lib/thriftStreaming');
 }

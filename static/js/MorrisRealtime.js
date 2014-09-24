@@ -17,7 +17,7 @@
     this._data = [];
     for (var i = 0; i < this._bufferSize; i++) {
       this._data.push({ts: Date.now() - (this._intervalMS * i), requests: 0});
-    };
+    }
     this._morris = new Morris.Area(morrisOptions);
   }
 

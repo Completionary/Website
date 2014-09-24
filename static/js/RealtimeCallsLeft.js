@@ -48,7 +48,7 @@
           self.current++;
           self.update();
           self.testInterval();
-        }, randTime)
+        }, randTime);
     };
 
     window.RealtimeCallsLeft = RealtimeCallsLeft;

@@ -8,12 +8,17 @@ var paymill = require('../lib/paymill');
 
 var bcrypt = require('co-bcrypt'),
     validator = require('validator'),
-    co = require('co'),
+    // co = require('co'),
     _ = require('underscore'),
-    passport = require('./auth'),
+    // passport = require('./auth'),
     endpoint = require('./endpoint'),
-    render = require('../lib/render');
+    render = require('../lib/render'),
+    crypto = require('crypto'),
+    thunkify = require('thunkify'),
+    nodemailer = require('nodemailer'),
+    emailTemplates = require('../emails.js');
 
+var randomBytes = thunkify(crypto.randomBytes);
 
 
 // CRUD Routes
@@ -63,6 +68,8 @@ module.exports.create = function *createUserHandler(next) {
             provider: 'local',
             email: postedUser.email
         });
+        // Login User
+        yield this.req.login(user);
     } catch(e) {
         // If only the email is in use, we return to the signup
         if (e.msg === 'email in use' && e.user) {
@@ -82,10 +89,8 @@ module.exports.create = function *createUserHandler(next) {
         }
     }
 
-    // Login User
-    yield this.req.login(user);
     // Redirect to users dashboard
-    this.response.redirect('/dashboard')
+    this.response.redirect('/dashboard');
 };
 
 // This is not a route!
@@ -107,7 +112,6 @@ function *createUser(data) {
     // All correct, create user
 
     // Does the user has a password or is he using github?
-    var passwd;
     if (data.password && data.provider === 'local') {
         // Salt and hash password
         var salt = yield bcrypt.genSalt(10, 10);
@@ -115,7 +119,7 @@ function *createUser(data) {
     }
 
     // Save user in database
-    var u = yield users.insert(data);
+    u = yield users.insert(data);
 
     if (u === null) {
         throw(Error('Could not create the user'));
@@ -133,7 +137,7 @@ module.exports.createUser = createUser;
 
 // Renders the Signup page
 // location: GET /signup
-module.exports.signup = function *serveSignup(next) {
+module.exports.signup = function *serveSignup() {
     var errors = this.session.errors;
     var data = this.session.data || {};
     this.session.data = null;
@@ -145,18 +149,52 @@ module.exports.signup = function *serveSignup(next) {
 
 // Renders the Login page
 // location: GET /login
-module.exports.login = function *serveLogin (next) {
+module.exports.login = function *serveLogin () {
     var errors = this.session.errors;
     var data = this.session.data || {};
     this.session.data = null;
     if (errors) {
         this.session.errors = null;
     }
-    this.body = yield render('login.html', this, {errors: errors, data: data})
+    this.body = yield render('login.html', this, {errors: errors, data: data});
 };
 
 // Renders the profile page
 // location: GET /profile
 module.exports.profile = function *serveProfile() {
     this.body = this.req.user;
+};
+
+module.exports.forgot = function *forgot() {
+  this.body = yield render('forgot.html', this);
+};
+
+// Requests a password reset
+module.exports.doForgot = function *doForgot() {
+  console.log('Hallo');
+  // Checks if a user exists
+  //
+  try {
+  var postedUser = this.request.body;
+  var u = yield users.findOne({email: postedUser.email});
+  if (u) {
+    // User exists, request password reset
+    // Create token
+    var buf = yield randomBytes(25);
+    var token = buf.toString('hex');
+    // Token is valid for one hour
+    u.resetPasswordToken = token;
+    u.resetPasswordExpired = Date.now() + 3600000;
+    yield users.updateById(u._id, u);
+
+    // Send Email with token
+    var smtpTransport = nodemailer.createTransport(config.emailConfig);
+    var mail = emailTemplates.forgotPassword(u.email, token, this.req.headers.host);
+    var sendMail = thunkify(smtpTransport.sendMail);
+    console.log('Sending password forgot mail to', u.email);
+    sendMail(mail);
+  }
+} catch(e) {
+  this.app.emit('error', e, this);
+}
 };

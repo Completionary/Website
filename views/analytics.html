@@ -1,0 +1,26 @@
+{% extends 'dashboard.html' %}
+
+{% block title %}Analytics{% endblock %}
+
+{% block dashboardHeading %}
+<h1>Analytics</h1>
+{% endblock %}
+
+{% block dashboard %}
+<div class="dashboard-widget col-md-5">
+  <h3 class="text-center">Realtime Requests</h3>
+  <hr>
+  <div id="realtimeChart" class="chart epoch">
+  </div>
+</div>
+<div class="dashboard-widget col-md-5 col-md-offset-1">
+  <h3 class="text-center">Current User</h3>
+  <hr>
+  <div id="realtimeUserChart" class="chart epoch">
+  </div>
+</div>
+
+{% endblock %}
+{% block dashInclude %}
+<script src="/js/Analytics.js"></script>
+{% endblock %}
